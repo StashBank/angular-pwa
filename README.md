@@ -4,7 +4,7 @@ This project requires firebase-tools. To install it run `npm install -g firebase
 
 ## Development server
 Run `ng build --watch` to build app in watch mode.
-Run `firebase serve` for a dev server. Navigate to `http://localhost:50000/`.
+Run `firebase serve` for a dev server. Navigate to `http://localhost:5000/`.
 
 ## Code scaffolding
 
