@@ -6,7 +6,9 @@
     <h1 class="app-app-name" routerLink="." style="cursor: pointer">{{ 'common.app-title' | translate }}</h1>
     <div spacer></div>
     <div class="actions">
-      <button mat-icon-button (click)="onUpdateAppClick()" *ngIf="newVersionAvailable$ | async">
+      <button mat-icon-button (click)="onUpdateAppClick()" *ngIf="newVersionAvailable$ | async"
+        [matTooltip]="'common.update-app-btn-tooltip' | translate"
+        [attr.aria-label]="'common.tooltip-btn-aria-label' | translate">
         <mat-icon>autorenew</mat-icon>
       </button>
     </div>
