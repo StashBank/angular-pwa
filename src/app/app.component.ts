@@ -1,9 +1,8 @@
 import { Component, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatSidenav, MatSnackBar } from '@angular/material';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { TranslateService } from '@ngx-translate/core';
 import { AppService } from './app.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +29,10 @@ export class AppComponent implements OnDestroy {
     this.appService.loading = value;
   }
 
+  get newVersionAvailable$() {
+    return this.appService.newVersionAvailable$;
+  }
+
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
@@ -43,7 +46,7 @@ export class AppComponent implements OnDestroy {
       this.appService.mobileView$.next(this.mobileQuery.matches);
     };
     this.mobileQuery.addEventListener('change', this.mobileQueryListener);
-    this.setUpLang();
+    translate.setDefaultLang('en');
   }
 
   ngOnDestroy(): void {
@@ -62,23 +65,8 @@ export class AppComponent implements OnDestroy {
     }
   }
 
-  setUpLang() {
-    let lang = 'en';
-    if (localStorage) {
-      const prefLang = localStorage.getItem('lang');
-      if (prefLang) {
-        lang = prefLang;
-        this.translate.use(lang);
-      }
-    }
-    this.translate.setDefaultLang(lang);
-  }
-
-  onLangChange(lang: string) {
-    if (localStorage) {
-      localStorage.setItem('lang', lang);
-    }
-    this.translate.use(lang);
+  onUpdateAppClick() {
+    this.appService.installUpdates();
   }
 
 }

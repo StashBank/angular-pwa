@@ -5,7 +5,11 @@
     </button>
     <h1 class="app-app-name" routerLink="." style="cursor: pointer">{{ 'common.app-title' | translate }}</h1>
     <div spacer></div>
-    <div class="actions"></div>
+    <div class="actions">
+      <button mat-icon-button (click)="onUpdateAppClick()" *ngIf="newVersionAvailable$ | async">
+        <mat-icon>autorenew</mat-icon>
+      </button>
+    </div>
   </mat-toolbar>
 
   <mat-sidenav-container class="app-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">

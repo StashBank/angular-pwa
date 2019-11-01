@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Platform } from '@angular/cdk/platform';
+import { SwUpdate } from '@angular/service-worker';
 
 @Injectable({ providedIn: 'root' })
 export class AppService {
@@ -11,6 +12,11 @@ export class AppService {
   }
   set loading(value: boolean) {
     this.loading$.next(value);
+  }
+
+  public newVersionAvailable$ = new BehaviorSubject<boolean>(false);
+  get newVersionAvailable(): boolean {
+    return this.newVersionAvailable$.getValue();
   }
 
   public mobileView$ = new BehaviorSubject<boolean>(false);
@@ -25,6 +31,20 @@ export class AppService {
     return this.platform.ANDROID || this.platform.IOS;
   }
 
-  constructor(public platform: Platform) { }
+  constructor(
+    public platform: Platform,
+    private updates: SwUpdate
+  ) {
+    updates.available.subscribe(event => this.newVersionAvailable$.next(true));
+  }
+
+  async installUpdates() {
+    if (!this.updates.isEnabled) {
+      return;
+    }
+    await this.updates.activateUpdate();
+    this.newVersionAvailable$.next(true);
+    document.location.reload();
+  }
 
 }
