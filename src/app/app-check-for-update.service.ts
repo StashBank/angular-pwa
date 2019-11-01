@@ -3,7 +3,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { concat, interval } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CheckForUpdateService {
 
   constructor(appRef: ApplicationRef, updates: SwUpdate) {
@@ -15,7 +15,8 @@ export class CheckForUpdateService {
     // everySixHoursOnceAppIsStable$.subscribe(() => updates.checkForUpdate());
     const everyFiveMinutes$ = interval(60 * 1000);
     const everyFiveMinutesOnceAppIsStable$ = concat(appIsStable$, everyFiveMinutes$);
-
-    everyFiveMinutesOnceAppIsStable$.subscribe(() => updates.checkForUpdate());
+    if (updates.isEnabled) {
+     everyFiveMinutesOnceAppIsStable$.subscribe(() => updates.checkForUpdate());
+    }
   }
 }

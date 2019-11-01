@@ -3,6 +3,7 @@ import { MatSidenav, MatSnackBar } from '@angular/material';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AppService } from './app.service';
 import { TranslateService } from '@ngx-translate/core';
+import { CheckForUpdateService } from './app-check-for-update.service';
 
 @Component({
   selector: 'app-root',
@@ -37,8 +38,9 @@ export class AppComponent implements OnDestroy {
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     private snackBar: MatSnackBar,
-    private translate: TranslateService,
-    private appService: AppService
+    private appService: AppService,
+    checkForUpdateSvc: CheckForUpdateService,
+    translate: TranslateService,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this.mobileQueryListener = _ => {
