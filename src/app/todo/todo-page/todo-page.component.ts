@@ -30,6 +30,10 @@ export class TodoPageComponent implements OnInit {
     return this.form && (this.form.invalid || this.form.pristine);
   }
 
+  get touchUI(): boolean {
+    return this.appSvc.touchUI;
+  }
+
   constructor(
     private appSvc: AppService,
     private todoDataSvc: TodoDataService,

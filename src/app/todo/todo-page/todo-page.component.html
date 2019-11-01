@@ -24,7 +24,7 @@
             <input matInput [matDatepicker]="dateToPicker" [placeholder]="'todo-caption.date-to' | translate "
               formControlName="dateTo">
             <mat-datepicker-toggle matSuffix [for]="dateToPicker"></mat-datepicker-toggle>
-            <mat-datepicker #dateToPicker></mat-datepicker>
+            <mat-datepicker #dateToPicker [touchUi]="touchUI"></mat-datepicker>
           </mat-form-field>
         </mat-grid-tile>
         <!-- #endregion -->
@@ -38,16 +38,11 @@
             <input matInput [matDatepicker]="completeDatePicker" [placeholder]="'todo-caption.complete-date' | translate "
               formControlName="completeDate">
             <mat-datepicker-toggle matSuffix [for]="completeDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #completeDatePicker></mat-datepicker>
+            <mat-datepicker #completeDatePicker [touchUi]="touchUI"></mat-datepicker>
           </mat-form-field>
         </mat-grid-tile>
         <!-- #endregion -->
 
-        <!-- #region Row 3 -->
-        <!-- #endregion -->
-
-        <!-- #region Row 4 -->
-        <!-- #endregion -->
       </mat-grid-list>
     </form>
   </mat-card-content>
