@@ -72,7 +72,7 @@ export abstract class FirebaseService<T> {
   }
 
   protected getAllQuery(): Observable<firebase.firestore.QuerySnapshot> {
-    return from(this.collection.get());
+    return new Observable(observer => this.collection.onSnapshot(observer));
   }
 
 }

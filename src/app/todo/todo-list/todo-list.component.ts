@@ -32,10 +32,14 @@ export class TodoListComponent implements OnInit {
   private loadItems() {
     this.appSvc.loading = true;
     this.todoList$ = this.todoDataSvc.getAll().pipe(
-      finalize(() => this.appSvc.loading = false),
       filter(data => Array.isArray(data)),
       map(data => data.map((todo, index) => ({...todo, position: index + 1} as GridTodo))),
-      tap(data => this.todoList = data),
+      tap(data => {
+        if (!this.todoList) {
+          this.appSvc.loading = false;
+        }
+        this.todoList = data || [];
+      }),
     );
   }
 
