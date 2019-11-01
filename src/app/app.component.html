@@ -1,0 +1,35 @@
+<div class="app-container" [class.app-is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="app-toolbar">
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="app-app-name" routerLink="." style="cursor: pointer">{{ 'common.app-title' | translate }}</h1>
+    <div spacer></div>
+    <!-- TODO: Make User profile menu with settings -->
+    <div class="lang-control" *ngIf="false">
+      <mat-select [formControl]="langControl">
+        <mat-option *ngFor="let lang of langs" [value]="lang.value">{{ lang.title }}</mat-option>
+      </mat-select>
+    </div>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="app-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0" (swipeLeft)="onSwipeLeft()">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="!mobileQuery.matches"
+      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <mat-nav-list >
+        <a *ngFor="let nav of fillerNav" mat-list-item routerLinkActive="active-link" [routerLink]="nav.path"
+          (click)="navLinkClick()">{{nav.title | translate }}</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content (swipeRight)="onSwipeRight($event)">
+      <div style="padding: 6px">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+<div class="progress-wrap" *ngIf="loading">
+  <mat-progress-spinner color="primary" mode="indeterminate" value="50">
+  </mat-progress-spinner>
+</div>

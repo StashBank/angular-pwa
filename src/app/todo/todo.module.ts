@@ -1,0 +1,17 @@
+import { NgModule } from '@angular/core';
+
+import { TodoRoutingModule } from './todo-routing.module';
+import { TodoListComponent } from './todo-list/todo-list.component';
+import { TodoDetailComponent } from './todo-detail/todo-detail.component';
+import { CoreModule } from '../core/core.module';
+
+
+@NgModule({
+  declarations: [TodoListComponent, TodoDetailComponent],
+  imports: [
+    CoreModule,
+    TodoRoutingModule
+  ],
+  exports: [TodoListComponent, TodoDetailComponent]
+})
+export class TodoModule { }
