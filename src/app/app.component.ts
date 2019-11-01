@@ -19,11 +19,6 @@ export class AppComponent implements OnDestroy {
     { title: 'common.main-menu.home', path: 'home' },
     { title: 'common.main-menu.todo', path: 'todo' },
   ];
-  langs: Array<{ title: string, value: string }> = [
-    { title: 'UA', value: 'ua' },
-    { title: 'EN', value: 'en' },
-  ];
-  langControl = new FormControl();
 
   private mobileQueryListener: (ev: MediaQueryListEvent) => void;
 
@@ -48,7 +43,6 @@ export class AppComponent implements OnDestroy {
       this.appService.mobileView$.next(this.mobileQuery.matches);
     };
     this.mobileQuery.addEventListener('change', this.mobileQueryListener);
-    this.translate.addLangs(this.langs.map(l => l.value));
     this.setUpLang();
   }
 
@@ -78,8 +72,6 @@ export class AppComponent implements OnDestroy {
       }
     }
     this.translate.setDefaultLang(lang);
-    this.langControl.setValue(lang);
-    this.langControl.valueChanges.subscribe(l => this.onLangChange(l));
   }
 
   onLangChange(lang: string) {
@@ -87,14 +79,6 @@ export class AppComponent implements OnDestroy {
       localStorage.setItem('lang', lang);
     }
     this.translate.use(lang);
-  }
-
-  onSwipeRight(event) {
-    this.snavRef.open();
-  }
-
-  onSwipeLeft() {
-    this.snavRef.close();
   }
 
 }

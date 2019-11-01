@@ -1,0 +1,54 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ 'todo-page-title' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ (item?.title || '') | translate }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <button mat-raised-button (click)="onBackClick()" *ngIf="!form || form.pristine; else dismissBtn">{{ 'common.back-button' | translate }}</button>
+    <ng-template #dismissBtn>
+      <button mat-raised-button (click)="onDismissClick()">{{ 'common.cancel-button' | translate }}</button>
+    </ng-template>
+    <button mat-raised-button color="primary" (click)="onSaveClick()" [disabled]="saveButtonDisabled">{{ 'common.save-button' | translate }}</button>
+  </mat-card-actions>
+  <mat-card-content>
+    <form [formGroup]="form">
+      <mat-grid-list [cols]="4" [rowHeight]="64">
+        <!-- #region Row 1 -->
+        <mat-grid-tile [colspan]="3">
+          <mat-form-field>
+            <input matInput [placeholder]="'todo-caption.title' | translate" formControlName="title" />
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1">
+          <mat-form-field>
+            <input matInput [matDatepicker]="dateToPicker" [placeholder]="'todo-caption.date-to' | translate "
+              formControlName="dateTo">
+            <mat-datepicker-toggle matSuffix [for]="dateToPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dateToPicker></mat-datepicker>
+          </mat-form-field>
+        </mat-grid-tile>
+        <!-- #endregion -->
+
+        <!-- #region Row 2 -->
+        <mat-grid-tile [colspan]="2">
+          <mat-checkbox formControlName="completed">{{ 'todo-caption.completed' | translate }}</mat-checkbox>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="2">
+          <mat-form-field>
+            <input matInput [matDatepicker]="completeDatePicker" [placeholder]="'todo-caption.complete-date' | translate "
+              formControlName="completeDate">
+            <mat-datepicker-toggle matSuffix [for]="completeDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #completeDatePicker></mat-datepicker>
+          </mat-form-field>
+        </mat-grid-tile>
+        <!-- #endregion -->
+
+        <!-- #region Row 3 -->
+        <!-- #endregion -->
+
+        <!-- #region Row 4 -->
+        <!-- #endregion -->
+      </mat-grid-list>
+    </form>
+  </mat-card-content>
+</mat-card>

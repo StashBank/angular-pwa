@@ -29,6 +29,7 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatSlideToggleModule,
+  MatCheckboxModule,
 } from '@angular/material';
 import { PlatformModule } from '@angular/cdk/platform';
 
@@ -80,6 +81,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,
+    MatCheckboxModule,
     PlatformModule,
     TimestampPipe,
     BooleanPipe,

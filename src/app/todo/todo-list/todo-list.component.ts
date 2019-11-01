@@ -18,7 +18,7 @@ export class TodoListComponent implements OnInit {
 
   todoList: GridTodo[];
   todoList$: Observable<GridTodo[]>;
-  displayedColumns = ['position', 'title', 'dateTo', 'complete' ];
+  displayedColumns = [ 'actions', 'position', 'title', 'dateTo', 'completed' ];
 
   constructor(
     private appSvc: AppService,
@@ -29,7 +29,7 @@ export class TodoListComponent implements OnInit {
     setTimeout(() => this.loadItems(), 100);
   }
 
-  loadItems() {
+  private loadItems() {
     this.appSvc.loading = true;
     this.todoList$ = this.todoDataSvc.getAll().pipe(
       finalize(() => this.appSvc.loading = false),
