@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { TodoModel } from '../todo.model';
 import { TodoDataService } from '../todo-data.service';
@@ -21,7 +21,6 @@ export class TodoListComponent implements OnInit {
   displayedColumns = [ 'actions', 'position', 'title', 'dateTo', 'completed' ];
 
   constructor(
-    private appSvc: AppService,
     private todoDataSvc: TodoDataService,
   ) { }
 
@@ -30,14 +29,10 @@ export class TodoListComponent implements OnInit {
   }
 
   private loadItems() {
-    this.appSvc.loading = true;
     this.todoList$ = this.todoDataSvc.getAll().pipe(
       filter(data => Array.isArray(data)),
       map(data => data.map((todo, index) => ({...todo, position: index + 1} as GridTodo))),
       tap(data => {
-        if (!this.todoList) {
-          this.appSvc.loading = false;
-        }
         this.todoList = data || [];
       }),
     );

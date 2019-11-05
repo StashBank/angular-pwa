@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -15,9 +15,6 @@ import { TimestampPipe } from 'src/app/core/timestamp.pipe';
   selector: 'app-todo-page',
   templateUrl: './todo-page.component.html',
   styleUrls: ['./todo-page.component.sass'],
-  providers: [
-    TimestampPipe
-  ]
 })
 export class TodoPageComponent implements OnInit {
 
@@ -41,7 +38,6 @@ export class TodoPageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private timestampPipe: TimestampPipe
   ) { }
 
   ngOnInit() {
@@ -76,7 +72,6 @@ export class TodoPageComponent implements OnInit {
     });
     const completedCtrl = this.form.get('completed');
     completedCtrl.valueChanges.pipe(
-      filter(() => !this.appSvc.loading)
     ).subscribe(value => {
       const completeDate = value ? new Date() : null;
       this.form.patchValue({
@@ -89,31 +84,21 @@ export class TodoPageComponent implements OnInit {
     if (!this.id) {
       return;
     }
-    this.appSvc.loading = true;
     this.todoDataSvc.getById(this.id).pipe(
-      finalize(() => this.appSvc.loading = false)
     ).subscribe(item => this.onItemLoaded(item));
   }
 
   private onItemLoaded(item: TodoModel) {
     this.srcItem = item;
-    const { dateTo, completeDate }: any = item;
-    this.item = {
-      ...item,
-      dateTo: this.timestampPipe.transform(dateTo),
-      completeDate: this.timestampPipe.transform(completeDate),
-    };
+    this.item = item;
     this.form.patchValue(this.item);
     this.form.markAllAsTouched();
     this.form.markAsPristine();
   }
 
   private save() {
-    this.appSvc.loading = true;
     this.getSaveQuery().pipe(
-      finalize(() => this.appSvc.loading = false)
-    )
-    .subscribe();
+    ).subscribe();
   }
 
   private dismiss() {

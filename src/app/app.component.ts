@@ -22,14 +22,6 @@ export class AppComponent implements OnDestroy {
 
   private mobileQueryListener: (ev: MediaQueryListEvent) => void;
 
-  get loading(): boolean {
-    return this.appService.loading;
-  }
-
-  set loading(value: boolean) {
-    this.appService.loading = value;
-  }
-
   get newVersionAvailable$() {
     return this.appService.newVersionAvailable$;
   }

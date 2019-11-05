@@ -6,14 +6,6 @@ import { SwUpdate } from '@angular/service-worker';
 @Injectable({ providedIn: 'root' })
 export class AppService {
 
-  public loading$ = new BehaviorSubject<boolean>(false);
-  get loading(): boolean {
-    return this.loading$.getValue();
-  }
-  set loading(value: boolean) {
-    this.loading$.next(value);
-  }
-
   public newVersionAvailable$ = new BehaviorSubject<boolean>(false);
   get newVersionAvailable(): boolean {
     return this.newVersionAvailable$.getValue();

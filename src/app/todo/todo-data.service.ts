@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
-import { FirebaseService } from '../firebase/firebase.service';
+import { Injectable, NgZone } from '@angular/core';
 import { TodoModel } from './todo.model';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TodoDataService extends FirebaseService<TodoModel> {
+export class TodoDataService extends DatabaseService<TodoModel> {
 
-  protected collectionName = 'todos';
+  constructor(ngZone: NgZone) {
+    super('todos', ngZone);
+  }
 
 }
