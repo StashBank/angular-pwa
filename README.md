@@ -2,9 +2,13 @@
 
 This project requires firebase-tools. To install it run `npm install -g firebase-tools`.
 
-## Development server
+## Development server (firebase branch)
 Run `ng build --watch` to build app in watch mode.
 Run `firebase serve` for a dev server. Navigate to `http://localhost:5000/`.
+
+## Development server (nedb branch)
+
+Run `npm start` to build app and run http server. Navigate to `http://localhost:3000/`.
 
 ## Code scaffolding
 
@@ -22,6 +26,6 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-## Deploy
+## Deploy (for firebase branch)
 
 Run `npm run deploy` for deploy it on Firebase hosting [Web site](https://angular-pwa-6dd1c.web.app)
