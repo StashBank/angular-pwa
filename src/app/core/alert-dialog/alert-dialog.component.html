@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{ data?.title | translate }}</h1>
+<div mat-dialog-content>
+  <p>{{ data?.message | translate }}</p>
+</div>
+<div mat-dialog-actions>
+  <button *ngFor="let btn of data.buttons"
+    mat-raised-button
+    [mat-dialog-close]="btn.buttonCode"
+    [color]="btn.color">
+    {{ 'common.alert-dialog-button.' + btn.buttonCode | translate }}
+  </button>
+</div>

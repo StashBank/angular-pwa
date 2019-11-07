@@ -4,6 +4,9 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { AppService } from './app.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CheckForUpdateService } from './app-check-for-update.service';
+import { SwPush } from '@angular/service-worker';
+import { NewsletterService } from './newsletter/newsletter.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +36,9 @@ export class AppComponent implements OnDestroy {
     private appService: AppService,
     checkForUpdateSvc: CheckForUpdateService,
     translate: TranslateService,
+    private swPush: SwPush,
+    private newsletterService: NewsletterService,
+    private router: Router,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this.mobileQueryListener = _ => {
@@ -41,6 +47,7 @@ export class AppComponent implements OnDestroy {
     };
     this.mobileQuery.addEventListener('change', this.mobileQueryListener);
     translate.setDefaultLang('en');
+    this.subscribeNavigationClick();
   }
 
   ngOnDestroy(): void {
@@ -61,6 +68,16 @@ export class AppComponent implements OnDestroy {
 
   onUpdateAppClick() {
     this.appService.installUpdates();
+  }
+
+  private subscribeNavigationClick() {
+    this.swPush.notificationClicks.subscribe(event => {
+      console.log(event);
+      const { id } = event.notification.data;
+      if (event.action === 'go' && id) {
+        this.router.navigate(['todo', 'edit', id]);
+      }
+    });
   }
 
 }

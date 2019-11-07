@@ -37,18 +37,48 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CoreTranslateService } from './translate.service';
 import { TimestampPipe } from './timestamp.pipe';
 import { BooleanPipe } from './boolean.pipe';
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/');
 }
 
+const matModules = [
+  MatButtonModule,
+  MatSnackBarModule,
+  MatProgressSpinnerModule,
+  MatSidenavModule,
+  MatIconModule,
+  MatToolbarModule,
+  MatMenuModule,
+  MatListModule,
+  MatTableModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatGridListModule,
+  MatSelectModule,
+  MatDialogModule,
+  MatExpansionModule,
+  MatSortModule,
+  MatTabsModule,
+  MatAutocompleteModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatSlideToggleModule,
+  MatCheckboxModule,
+  MatTooltipModule,
+  MatDialogModule,
+]
 @NgModule({
-  declarations: [TimestampPipe, BooleanPipe],
+  declarations: [TimestampPipe, BooleanPipe, AlertDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+
+    ...matModules,
 
     TranslateModule.forRoot({
       loader: { provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient] },
@@ -60,33 +90,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReactiveFormsModule,
     TranslateModule,
 
-    MatButtonModule,
-    MatSnackBarModule,
-    MatProgressSpinnerModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatListModule,
-    MatTableModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatGridListModule,
-    MatSelectModule,
-    MatDialogModule,
-    MatExpansionModule,
-    MatSortModule,
-    MatTabsModule,
-    MatAutocompleteModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatSlideToggleModule,
-    MatCheckboxModule,
-    MatTooltipModule,
+    ...matModules,
+
     PlatformModule,
     TimestampPipe,
     BooleanPipe,
+    AlertDialogComponent,
+  ],
+  entryComponents: [
+    AlertDialogComponent
   ],
   providers: [
     { provide: TranslateService, useClass: CoreTranslateService }

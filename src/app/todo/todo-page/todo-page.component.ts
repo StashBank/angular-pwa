@@ -1,15 +1,15 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
-import { finalize, tap, filter } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import { AppService } from 'src/app/app.service';
 import { TodoDataService } from '../todo-data.service';
 import { TodoModel } from '../todo.model';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TimestampPipe } from 'src/app/core/timestamp.pipe';
+import { NewsletterService } from 'src/app/newsletter/newsletter.service';
 
 @Component({
   selector: 'app-todo-page',
@@ -38,6 +38,7 @@ export class TodoPageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private newsletterService: NewsletterService,
   ) { }
 
   ngOnInit() {
@@ -89,16 +90,22 @@ export class TodoPageComponent implements OnInit {
   }
 
   private onItemLoaded(item: TodoModel) {
-    this.srcItem = item;
-    this.item = item;
-    this.form.patchValue(this.item);
-    this.form.markAllAsTouched();
-    this.form.markAsPristine();
+    if (item) {
+      this.srcItem = item;
+      this.item = item;
+      this.form.patchValue(this.item);
+      this.form.markAllAsTouched();
+      this.form.markAsPristine();
+    }
   }
 
   private save() {
     this.getSaveQuery().pipe(
-    ).subscribe();
+    ).subscribe(_ => this.sendNotification(
+      'Todo', 'New TODO created',
+      { id: this.id },
+      [{ action: 'go', title: 'Go'}]
+    ));
   }
 
   private dismiss() {
@@ -119,6 +126,15 @@ export class TodoPageComponent implements OnInit {
 
   private navigateToEdit(id: string) {
     this.router.navigate(['..', 'edit', id], { relativeTo: this.route, replaceUrl: true });
+  }
+
+  private sendNotification(title, body, data?, actions?) {
+    const senderId = localStorage.getItem('subscriber_id');
+    this.newsletterService.send({ title, body, data, actions }, senderId)
+    .subscribe(
+      _ => null,
+      err => console.error(err)
+    );
   }
 
 }

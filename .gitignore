@@ -40,6 +40,8 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+data.db
+vapid-key.json
 
 # System Files
 .DS_Store

@@ -9,6 +9,26 @@
       <p>
         <a mat-raised-button [routerLink]="['/todo']">Todos</a>
       </p>
+      <p>
+        <ng-container *ngIf="subscriberId; then btnUnsubscribe; else btnSubscribe"></ng-container>
+        <ng-template #btnSubscribe>
+          <button mat-raised-button color="primary" (click)="subscribe()">Subscribe</button>
+        </ng-template>
+        <ng-template #btnUnsubscribe>
+          <button mat-raised-button (click)="unsubscribe()">Unsubscribe</button>
+        </ng-template>
+      </p>
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="Title" [(ngModel)]="title" />
+        </mat-form-field>
+        <mat-form-field>
+          <textarea matInput placeholder="Body" [(ngModel)]="body" ></textarea>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" (click)="send()">Send</button>
+      </div>
     </div>
   </div>
 </div>
