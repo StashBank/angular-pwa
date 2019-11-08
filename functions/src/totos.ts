@@ -23,13 +23,14 @@ export class TodoService {
     const query = docRef.get()
       .then(d => ({
         id: d.id,
-        ...JSON.parse(JSON.stringify(d))
+        ...d.data()
       } as any));
     return query;
   }
 
   add(dto: any): Promise<any> {
-    const id = Guid.create().toString();
+    const id = dto.id || Guid.create().toString();
+    delete dto.id;
     const docRef = this.collection.doc(id);
     const query = docRef.set(dto)
       .then(_ => docRef.get())
