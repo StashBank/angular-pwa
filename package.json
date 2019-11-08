@@ -8,7 +8,7 @@
     "build": "ng build",
     "build:server": "cd server && npm run build",
     "build:prod": "ng build --prod=true",
-    "deploy": "npm run build:prod && firebase deploy",
+    "deploy": "npm run build:prod && firebase deploy --only functions:application,hosting",
     "test": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
     "e2e": "ng e2e",

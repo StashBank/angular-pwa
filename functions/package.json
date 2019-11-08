@@ -13,12 +13,19 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "firebase-admin": "^8.6.0",
-    "firebase-functions": "^3.3.0"
+    "express": "^4.17.1",
+    "express-static": "^1.2.6",
+    "firebase": "^7.3.0",
+    "firebase-admin": "^8.7.0",
+    "firebase-functions": "^3.3.0",
+    "guid-typescript": "^1.0.9",
+    "web-push": "^3.4.1"
   },
   "devDependencies": {
     "typescript": "^3.2.2",
-    "firebase-functions-test": "^0.1.6"
+    "firebase-functions-test": "^0.1.6",
+    "@types/express": "^4.17.2",
+    "@types/web-push": "^3.3.0"
   },
   "private": true
 }

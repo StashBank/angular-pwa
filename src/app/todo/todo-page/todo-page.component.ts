@@ -108,7 +108,7 @@ export class TodoPageComponent implements OnInit {
       'Todo',
       getNotificationMessage(todo),
       { id: todo.id },
-      [{ action: 'go', title: 'Go'}]
+      [{ action: 'go', title: 'Go to TODO'}]
     ));
   }
 

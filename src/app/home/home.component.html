@@ -12,10 +12,10 @@
       <p>
         <ng-container *ngIf="subscriberId; then btnUnsubscribe; else btnSubscribe"></ng-container>
         <ng-template #btnSubscribe>
-          <button mat-raised-button color="primary" (click)="subscribe()">Subscribe</button>
+          <button mat-raised-button color="primary" (click)="subscribe()" [disabled]="loading">Subscribe</button>
         </ng-template>
         <ng-template #btnUnsubscribe>
-          <button mat-raised-button (click)="unsubscribe()">Unsubscribe</button>
+          <button mat-raised-button (click)="unsubscribe()" [disabled]="loading">Unsubscribe</button>
         </ng-template>
       </p>
       <div>
@@ -27,7 +27,7 @@
         </mat-form-field>
       </div>
       <div>
-        <button mat-raised-button color="primary" (click)="send()">Send</button>
+        <button mat-raised-button color="primary" (click)="send()" [disabled]="loading">Send</button>
       </div>
     </div>
   </div>

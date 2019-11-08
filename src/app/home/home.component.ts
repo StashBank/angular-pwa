@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   subscriberId: string;
   title: string;
   body: string;
+  loading = false;
 
   get touchUI(): boolean {
     return this.appService.touchUI;
@@ -43,6 +44,7 @@ export class HomeComponent implements OnInit {
   }
 
   subscribe() {
+    this.loading = true;
     from(
       this.swPush.requestSubscription({ serverPublicKey: this.VAPID_PUBLIC_KEY})
     ).pipe(
@@ -52,28 +54,42 @@ export class HomeComponent implements OnInit {
     ).subscribe(subscriber => {
       this.subscriberId = subscriber.id;
       localStorage.setItem('subscriber_id', subscriber.id);
+      this.loading = false;
     }, err => {
-      console.error('Could not subscribe to notifications', err);
-      alert(err.message);
+        console.error('Could not subscribe to notifications', err);
+        alert(err.message);
+        this.loading = false;
     });
   }
 
   unsubscribe() {
+    this.loading = true;
     this.newsletterService.removePushSubscriber(this.subscriberId)
       .subscribe(() => {
         this.subscriberId = null;
         localStorage.removeItem('subscriber_id');
-      }, err => console.error(err));
+        this.loading = false;
+      }, err => {
+          console.error(err);
+          this.loading = false;
+      });
   }
 
   send() {
+    this.loading = true;
     this.newsletterService.send({
       title: this.title,
       body: this.body
     }, this.subscriberId).subscribe(
-      res => res ? this.showAlert(res.message) : null,
-      err => console.error(err)
-    );
+      res => {
+        this.loading = false;
+        this.title = null;
+        this.body = null;
+        return res ? this.showAlert(res.message) : null;
+      }, err => {
+        console.error(err);
+        this.loading = false;
+    });
   }
 
   private showAlert(message: string) {
