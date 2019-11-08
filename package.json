@@ -12,7 +12,7 @@
     "test": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "install": "npm run install && cd server &7 npm run install"
+    "install": "npm run install && cd server && npm run install"
   },
   "private": true,
   "dependencies": {
