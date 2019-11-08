@@ -100,10 +100,14 @@ export class TodoPageComponent implements OnInit {
   }
 
   private save() {
+    const getNotificationMessage = todo => this.id
+      ? `TODO "${todo.title}" updated`
+      : `New TODO created "${todo.title}"`;
     this.getSaveQuery().pipe(
-    ).subscribe(_ => this.sendNotification(
-      'Todo', 'New TODO created',
-      { id: this.id },
+    ).subscribe(todo => this.sendNotification(
+      'Todo',
+      getNotificationMessage(todo),
+      { id: todo.id },
       [{ action: 'go', title: 'Go'}]
     ));
   }

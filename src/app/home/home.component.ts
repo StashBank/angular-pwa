@@ -52,7 +52,10 @@ export class HomeComponent implements OnInit {
     ).subscribe(subscriber => {
       this.subscriberId = subscriber.id;
       localStorage.setItem('subscriber_id', subscriber.id);
-    }, err => console.error('Could not subscribe to notifications', err));
+    }, err => {
+      console.error('Could not subscribe to notifications', err);
+      alert(err.message);
+    });
   }
 
   unsubscribe() {

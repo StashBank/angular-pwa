@@ -4,12 +4,15 @@
   "scripts": {
     "ng": "ng",
     "start": "npm run build:prod && node server.js",
+    "serve": "npm run build:prod && npm run build:server && nodemon dist/server.js",
     "build": "ng build",
+    "build:server": "cd server && npm run build",
     "build:prod": "ng build --prod=true",
     "deploy": "npm run build:prod && firebase deploy",
     "test": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "install": "npm run install && cd server &7 npm run install"
   },
   "private": true,
   "dependencies": {
