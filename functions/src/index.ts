@@ -89,7 +89,10 @@ api.post('/newsletter', async (req, res) => {
     )
   ).catch(err => {
     console.error('Error sending notification, reason: ', err);
-    res.sendStatus(500);
+    res.status(500).send({
+      message: 'Error sending notification',
+      reason: err.message
+    });
   });
   res.status(200).json({ message: 'Newsletter sent successfully.' });
 });

@@ -23,7 +23,7 @@ export class TodoService {
     const query = docRef.get()
       .then(d => ({
         id: d.id,
-        ...d.data()
+        ...JSON.parse(JSON.stringify(d))
       } as any));
     return query;
   }
