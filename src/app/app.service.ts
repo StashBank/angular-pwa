@@ -35,7 +35,6 @@ export class AppService {
       return;
     }
     await this.updates.activateUpdate();
-    this.newVersionAvailable$.next(true);
     document.location.reload();
   }
 
