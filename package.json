@@ -14,7 +14,7 @@
     "e2e": "ng e2e",
     "install:functions": "cd functions && npm run install",
     "install:server": "cd server && npm run install",
-    "install": "npm run install && npm run install:functions"
+    "install:all": "npm run install && npm run install:functions"
   },
   "private": true,
   "dependencies": {
