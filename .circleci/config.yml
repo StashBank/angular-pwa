@@ -38,7 +38,7 @@ jobs:
       #- run: yarn test
 
       # run build
-      - run: ng build --prod=true
+      - run: yarn build:prod
 
       # run deploy
       - run: firebase deploy --only functions:application,hosting
