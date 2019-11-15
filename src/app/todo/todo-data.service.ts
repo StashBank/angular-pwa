@@ -39,4 +39,12 @@ export class TodoDataService {
     return this.http.delete<number>(`/api/todos/${id}`);
   }
 
+  public getGridSetting<T>(key: string): Observable<T> {
+    return this.http.get<T>(`/api/todos/settings/${key}`);
+  }
+
+  public setGridSetting<T>(key: string, settings: T): Observable<T> {
+    return this.http.post<T>(`/api/todos/settings/${key}`, settings);
+  }
+
 }

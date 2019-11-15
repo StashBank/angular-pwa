@@ -6,6 +6,52 @@
     <button mat-raised-button color="primary" [routerLink]="['new']">{{ 'common.add-button' | translate }}</button>
   </mat-card-actions>
   <mat-card-content>
+    <div>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          Displayed columns
+        </mat-expansion-panel-header>
+        <mat-grid-list [cols]="6" [rowHeight]="64">
+          <mat-grid-tile [colspan]="1">
+            <mat-checkbox [(ngModel)]="settings.displayedColumns.actions">
+              {{ 'todo-caption.actions' | translate }}
+            </mat-checkbox>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <mat-checkbox [(ngModel)]="settings.displayedColumns.position">
+              {{ 'todo-caption.position' | translate }}
+            </mat-checkbox>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <mat-checkbox [(ngModel)]="settings.displayedColumns.title">
+              {{ 'todo-caption.title' | translate }}
+            </mat-checkbox>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <mat-checkbox [(ngModel)]="settings.displayedColumns.dateTo">
+              {{ 'todo-caption.date-to' | translate }}
+            </mat-checkbox>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <mat-checkbox [(ngModel)]="settings.displayedColumns.completed">
+              {{ 'todo-caption.completed' | translate }}
+            </mat-checkbox>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <mat-checkbox [(ngModel)]="settings.displayedColumns.completeDate">
+              {{ 'todo-caption.complete-date' | translate }}
+            </mat-checkbox>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <button mat-raised-button color="primary"
+              (click)="onSaveDisplayColumnsClick()"
+              [disabled]="saveDisplayColumnsDisabled">
+              {{ 'common.save-button' | translate }}
+            </button>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-expansion-panel>
+    </div>
     <div class="wrap-container mat-elevation-z8">
       <table mat-table [dataSource]="todoList$">
     
@@ -49,6 +95,13 @@
         <ng-container matColumnDef="completed">
           <th mat-header-cell *matHeaderCellDef>{{ 'todo-caption.completed' | translate }}</th>
           <td mat-cell *matCellDef="let element"> {{ (element.completed ? 'common.yes' : 'common.no') | translate }} </td>
+        </ng-container>
+        <!-- #endregion -->
+
+        <!-- #region Complete Column -->
+        <ng-container matColumnDef="completeDate">
+          <th mat-header-cell *matHeaderCellDef>{{ 'todo-caption.complete-date' | translate }}</th>
+          <td mat-cell *matCellDef="let element"> {{ element.completeDate | date:'short' }} </td>
         </ng-container>
         <!-- #endregion -->
     

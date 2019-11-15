@@ -7,6 +7,10 @@ export class TodoService {
     return this.db.collection('todos');
   }
 
+  get settingsCollection() {
+    return this.db.collection('todos-settings');
+  }
+
   constructor(private db: FirebaseFirestore.Firestore) {}
 
   getAll(): Promise<any[]> {
@@ -55,6 +59,28 @@ export class TodoService {
   remove(id: string): Promise<any> {
     const docRef = this.collection.doc(id);
     const query = docRef.delete();
+    return query;
+  }
+
+  // Grid settings
+  getGridSetting(key: string): Promise<any> {
+    const docRef = this.collection.doc(key);
+    const query = docRef.get()
+      .then(d => ({
+        id: d.id,
+        ...d.data()
+      } as any));
+    return query;
+  }
+
+  setGridSetting(key: string, setting: any): Promise<any> {
+    const docRef = this.collection.doc(key);
+    const query = docRef.set(setting)
+      .then(_ => docRef.get())
+      .then(d => ({
+        id: d.id,
+        ...d.data()
+      } as any));
     return query;
   }
 

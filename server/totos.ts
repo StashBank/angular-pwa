@@ -2,12 +2,11 @@ import * as Nedb from 'nedb';
 
 export class TodoService {
   private db: Nedb;
+  private settingsDb: Nedb;
 
   constructor() {
-    this.db = new Nedb({
-      filename: 'todos.db',
-      autoload: true
-    });
+    this.db = new Nedb({ filename: 'todos.db', autoload: true });
+    this.settingsDb = new Nedb({ filename: 'todos.settings.db', autoload: true });
   }
 
   getAll(): any[] {
@@ -35,6 +34,23 @@ export class TodoService {
   remove(id: string): Promise<number> {
     return new Promise((resolve, reject) => {
       this.db.remove({ id }, this.dbResponseHandler(resolve, reject));
+    });
+  }
+
+  // Grid settings
+  getGridSetting(key: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.settingsDb.find({ key }, this.dbResponseHandler(resolve, reject));
+    }).then((x: any) => x.setting);
+  }
+
+  setGridSetting(key: string, setting: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.settingsDb.getAllData().some(x => x.key === key)) {
+        this.settingsDb.update({ key }, { key, setting }, {}, this.dbResponseHandler(resolve, reject));
+      } else {
+        this.settingsDb.insert({ key, setting }, this.dbResponseHandler(resolve, reject));
+      }
     });
   }
 

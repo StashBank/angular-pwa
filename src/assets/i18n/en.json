@@ -23,6 +23,8 @@
   "common.alert-dialog-button.cancel": "Cancel",
   "todo-title": "Todo Lists",
   "todo-page-title": "Todo",
+  "todo-caption.actions": "Actions",
+  "todo-caption.position": "No.",
   "todo-caption.title": "Title",
   "todo-caption.date-to": "Date To",
   "todo-caption.completed": "Completed",
