@@ -29,5 +29,20 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "api",
+      "urls": [
+        "/api/todos"
+      ],
+      "cacheConfig": {
+        "maxAge": "5m",
+        "maxSize": 10,
+        "strategy": "freshness",
+        "timeout": "5s"
+      },
+      "version": 1
+    }
   ]
 }
