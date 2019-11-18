@@ -39,9 +39,9 @@ export class TodoService {
 
   // Grid settings
   getGridSetting(key: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.settingsDb.find({ key }, this.dbResponseHandler(resolve, reject));
-    }).then((x: any) => x.setting);
+    return Promise.resolve(
+      this.settingsDb.getAllData().find(x => x.key === key)
+    ).then((x: any) => x.setting);
   }
 
   setGridSetting(key: string, setting: any): Promise<any> {

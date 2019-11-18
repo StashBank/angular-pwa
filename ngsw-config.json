@@ -15,11 +15,7 @@
         ],
         "urls": [
           "https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap",
-          "https://fonts.googleapis.com/icon?family=Material+Icons",
-          "*/__/firebase/6.6.1/firebase-app.js",
-          "*/__/firebase/6.6.1/firebase-auth.js",
-          "*/__/firebase/6.6.1/firebase-firestore.js",
-          "*/__/firebase/init.js" 
+          "https://fonts.googleapis.com/icon?family=Material+Icons" 
         ]
       }
     }, {
