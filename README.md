@@ -38,4 +38,6 @@ Run `npm run deploy` for deploy it on Firebase hosting [Web site](https://angula
 
 [Building Our First PWA | Example Project](https://www.youtube.com/watch?v=I3jTvWj8JrQ)
 
+[Progressive Web Apps (PWA) - The Complete Guide [Video] on udemy](https://www.udemy.com/course/progressive-web-app-pwa-the-complete-guide/)
+
 [Progressive Web Apps (PWA) - The Complete Guide [Video] on www.packtpub.com](https://www.packtpub.com/web-development/progressive-web-apps-pwa-complete-guide-video)
