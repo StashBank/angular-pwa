@@ -64,23 +64,17 @@ export class TodoService {
 
   // Grid settings
   getGridSetting(key: string): Promise<any> {
-    const docRef = this.collection.doc(key);
+    const docRef = this.settingsCollection.doc(key);
     const query = docRef.get()
-      .then(d => ({
-        id: d.id,
-        ...d.data()
-      } as any));
+      .then(d => d.data());
     return query;
   }
 
   setGridSetting(key: string, setting: any): Promise<any> {
-    const docRef = this.collection.doc(key);
+    const docRef = this.settingsCollection.doc(key);
     const query = docRef.set(setting)
       .then(_ => docRef.get())
-      .then(d => ({
-        id: d.id,
-        ...d.data()
-      } as any));
+      .then(d => d.data());
     return query;
   }
 
