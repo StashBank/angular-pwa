@@ -99,6 +99,18 @@ api.post('/newsletter', async (req, res) => {
   res.status(200).json({ message: 'Newsletter sent successfully.' });
 });
 
+api.get('/settings/:key', async (req, res) => {
+  const key = req.params.key;
+  const setting = await todoSvc.getGridSetting(key);
+  res.send(setting);
+})
+api.post('/settings/:key', async (req, res) => {
+  const key = req.params.key;
+  const setting = req.body;
+  const numbers = await todoSvc.setGridSetting(key, setting);
+  res.send({ numbers });
+});
+
 const todosApi = express.Router()
   .get('', async (req, res) => {
     const data = await todoSvc.getAll();
