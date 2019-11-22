@@ -6,7 +6,10 @@ This project requires firebase-tools. To install it run `npm install -g firebase
 
 Run `npm run build:server` to build http server.
 Run `ng b --prod` to build web app.
-Run `nodemon dist/server.js` to run http server. Navigate to `http://localhost:3000/`.
+Run `nodemon dist/server.js` to run http server.
+
+Navigate to `http://localhost:3000/`.
+
 Also you can run `npm run serve` to run all this commands.
 
 ## Code scaffolding
