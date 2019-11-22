@@ -2,21 +2,16 @@
 
 This project requires firebase-tools. To install it run `npm install -g firebase-tools`.
 
-## Development server (firebase branch)
-Run `ng build --watch` to build app in watch mode.
-Run `firebase serve` for a dev server. Navigate to `http://localhost:5000/`.
+## Development server
 
-## Development server (nedb branch)
-
-Run `npm start` to build app and run http server. Navigate to `http://localhost:3000/`.
+Run `npm run build:server` to build http server.
+Run `ng b --prod` to build web app.
+Run `nodemon dist/server.js` to run http server. Navigate to `http://localhost:3000/`.
+Also you can run `npm run serve` to run all this commands.
 
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Running unit tests
 
