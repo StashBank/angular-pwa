@@ -70,9 +70,9 @@ api.post('/newsletter', async (req, res) => {
     notification: {
       title: payload.title || 'News',
       body: payload.body || 'Newsletter Available!',
-      icon: 'assets/icons/bell.svg',
-      image: 'assets/icons/bell.svg',
-      badge: 'assets/icons/bell.svg',
+      icon: 'assets/icons/bell.png',
+      image: 'assets/icons/bell.png',
+      badge: 'assets/icons/bell.png',
       vibrate: [500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500],
       data: payload.data || {
         dateOfArrival: Date.now(),
