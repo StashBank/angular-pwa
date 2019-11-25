@@ -71,13 +71,13 @@ export class AppComponent implements OnDestroy {
   }
 
   private subscribeNavigationClick() {
-    this.swPush.notificationClicks.subscribe(event => {
+    /*this.swPush.notificationClicks.subscribe(event => {
       console.log(event);
       const { id } = event.notification.data;
       if (event.action === 'go' && id) {
         this.router.navigate(['todo', 'edit', id]);
       }
-    });
+    });*/
   }
 
 }

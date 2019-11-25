@@ -34,6 +34,8 @@ import {
 } from '@angular/material';
 import { PlatformModule } from '@angular/cdk/platform';
 
+import { NgxIndexedDBModule, DBConfig } from 'ngx-indexed-db';
+
 import { CoreTranslateService } from './translate.service';
 import { TimestampPipe } from './timestamp.pipe';
 import { BooleanPipe } from './boolean.pipe';
@@ -42,6 +44,18 @@ import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/');
 }
+
+const dbConfig: DBConfig = {
+  name: 'todoPosts', version: 1, objectStoresMeta: [
+    {
+      store: 'todo',
+      storeConfig: { keyPath: 'key', autoIncrement: true },
+      storeSchema: [
+        // { name: 'posts', keypath: 'key', options: { unique: false } }
+      ]
+    }
+  ]
+};
 
 const matModules = [
   MatButtonModule,
@@ -69,7 +83,8 @@ const matModules = [
   MatCheckboxModule,
   MatTooltipModule,
   MatDialogModule,
-]
+];
+
 @NgModule({
   declarations: [TimestampPipe, BooleanPipe, AlertDialogComponent],
   imports: [
@@ -83,12 +98,14 @@ const matModules = [
     TranslateModule.forRoot({
       loader: { provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient] },
     }),
+    NgxIndexedDBModule.forRoot(dbConfig)
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    NgxIndexedDBModule,
 
     ...matModules,
 

@@ -1,21 +1,11 @@
 import * as express from 'express';
 import * as serve from 'express-static';
 import * as bodyParser from 'body-parser';
-import * as webpush from 'web-push';
-import * as vapidKeys from '../vapid-key.json';
 import { NotificationService } from './notifications';
 import { TodoService } from './totos';
 
 const notificationSvc = new NotificationService();
 const todoSvc = new TodoService();
-
-const { publicKey, privateKey } = vapidKeys as any;
-
-webpush.setVapidDetails(
-  'mailto:o.pavlovskyi@certentinc.com',
-  publicKey,
-  privateKey
-);
 
 const app = express();
 app.use(bodyParser.json());
@@ -52,39 +42,18 @@ api.delete('/notifications/:id', (req, res) => {
   }
 });
 
-api.post('/newsletter', async (req, res) => {
+api.post('/newsletter', (req, res) => {
   const payload = req.body || {};
   const senderId = req.query.senderId;
-  const allSubscriptions = notificationSvc.getAll().filter(x => x._id !== senderId);
-  const notificationPayload = {
-    notification: {
-      title: payload.title || 'News',
-      body: payload.body || 'Newsletter Available!',
-      icon: '/assets/icons/bell.png',
-      image: '/assets/icons/bell.png',
-      badge: '/assets/icons/bell.png',
-      vibrate: [100, 50, 100],
-      data: payload.data || {
-        dateOfArrival: Date.now(),
-        primaryKey: 1
-      },
-      actions: payload.actions || [{
-        action: 'ok',
-        title: 'OK',
-        icon: '/assets/icons/bell.png'
-      }]
-    }
 
-  };
-  await Promise.all(
-    allSubscriptions.map(
-      sub => webpush.sendNotification(sub as any, JSON.stringify(notificationPayload))
-    )
-  ).catch(err => {
+  notificationSvc.sendNotification(payload, senderId)
+  .then(() => {
+    res.status(200).json({ message: 'Newsletter sent successfully.' });
+  })
+  .catch(err => {
     console.error('Error sending notification, reason: ', err);
     res.sendStatus(500);
   });
-  res.status(200).json({ message: 'Newsletter sent successfully.' });
 });
 
 const todosApi = express.Router()
@@ -102,8 +71,18 @@ const todosApi = express.Router()
   })
   .post('', async (req, res) => {
     const body = req.body;
+    const senderId = req.query.senderId;
     try {
       const data = await todoSvc.add(body);
+      notificationSvc.sendNotification({
+        title: 'Todo',
+        body: `New TODO created "${data.title}"`,
+        data: {
+          id: data.id,
+          url: `/#/todo/edit/${data.id}`
+        },
+        actions: [{ action: 'go', title: 'Go to TODO' }]
+      }, senderId);
       res.send(data);
     } catch (err) {
       res.status(500).status(err);
@@ -112,12 +91,30 @@ const todosApi = express.Router()
   .put('/:id', async (req, res) => {
     const id = req.params.id;
     const body = req.body;
-    try {
-      await todoSvc.update(id, body);
+    const senderId = req.query.senderId;
+    todoSvc.update(id, body)
+    .then(() => {
+      console.log(`Todo "${body.title} updated. sending notification`);
+      notificationSvc.sendNotification({
+        title: 'Todo',
+        body: `TODO "${body.title}" updated`,
+        data: {
+          id: body.id,
+          url: `/#/todo/edit/${body.id}`
+        },
+        actions: [{ action: 'go', title: 'Go to TODO' }]
+      }, senderId)
+      .then(() => {
+        console.log('Notification sended');
+      })
+      .catch(err => {
+        console.log('Error while sending notification', err);
+      });
       res.send(body);
-    } catch (err) {
+    })
+    .catch((err) => {
       res.status(500).status(err);
-    }
+    });
   })
   .get('/settings/:key', async (req, res) => {
     const key = req.params.key;

@@ -6,7 +6,6 @@ import { TodoDetailComponent } from './todo-detail/todo-detail.component';
 import { TodoPageComponent } from './todo-page/todo-page.component';
 import { TodoCoreModule } from './todo-core.module';
 
-
 @NgModule({
   declarations: [
     TodoListComponent,

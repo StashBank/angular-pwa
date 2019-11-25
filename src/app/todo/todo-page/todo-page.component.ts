@@ -9,7 +9,9 @@ import { AppService } from 'src/app/app.service';
 import { TodoDataService } from '../todo-data.service';
 import { TodoModel } from '../todo.model';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NewsletterService } from 'src/app/newsletter/newsletter.service';
+import { MatSnackBar } from '@angular/material';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { Guid } from 'functions/node_modules/guid-typescript/dist/guid';
 
 @Component({
   selector: 'app-todo-page',
@@ -31,6 +33,10 @@ export class TodoPageComponent implements OnInit {
     return this.appSvc.touchUI;
   }
 
+  get senderId(): string {
+    return localStorage.getItem('sender_id');
+  }
+
   constructor(
     private appSvc: AppService,
     private todoDataSvc: TodoDataService,
@@ -38,8 +44,7 @@ export class TodoPageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private newsletterService: NewsletterService,
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.initForm();
@@ -100,16 +105,8 @@ export class TodoPageComponent implements OnInit {
   }
 
   private save() {
-    const getNotificationMessage = todo => this.id
-      ? `TODO "${todo.title}" updated`
-      : `New TODO created "${todo.title}"`;
-    this.getSaveQuery().pipe(
-    ).subscribe(todo => this.sendNotification(
-      'Todo',
-      getNotificationMessage(todo),
-      { id: todo.id },
-      [{ action: 'go', title: 'Go to TODO'}]
-    ));
+    const query = this.getSaveQuery();
+    query.subscribe(todo => null);
   }
 
   private dismiss() {
@@ -130,15 +127,6 @@ export class TodoPageComponent implements OnInit {
 
   private navigateToEdit(id: string) {
     this.router.navigate(['..', 'edit', id], { relativeTo: this.route, replaceUrl: true });
-  }
-
-  private sendNotification(title, body, data?, actions?) {
-    const senderId = localStorage.getItem('subscriber_id');
-    this.newsletterService.send({ title, body, data, actions }, senderId)
-    .subscribe(
-      _ => null,
-      err => console.error(err)
-    );
   }
 
 }

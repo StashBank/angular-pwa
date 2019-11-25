@@ -17,15 +17,8 @@ const config = functions.config();
 
 const { public_key, private_key} = config.vapidkey;
 
-const notificationSvc = new NotificationService(firebaseApp.firestore());
+const notificationSvc = new NotificationService(firebaseApp.firestore(), public_key, private_key);
 const todoSvc = new TodoService(firebaseApp.firestore());
-
-
-webpush.setVapidDetails(
-  'mailto:o.pavlovskyi@certentinc.com',
-  public_key,
-  private_key
-);
 
 const app = express();
 app.use(bodyParser.json());
@@ -116,8 +109,18 @@ const todosApi = express.Router()
   })
   .post('', async (req, res) => {
     const body = req.body;
+    const senderId = req.query.senderId;
     try {
       const data = await todoSvc.add(body);
+      notificationSvc.sendNotification({
+        title: 'Todo',
+        body: `New TODO created "${data.title}"`,
+        data: {
+          id: data.id,
+          url: `/#/todo/edit/${data.id}`
+        },
+        actions: [{ action: 'go', title: 'Go to TODO' }]
+      }, senderId);
       res.send(data);
     } catch (err) {
       res.status(500).status(err);
@@ -126,8 +129,18 @@ const todosApi = express.Router()
   .put('/:id', async (req, res) => {
     const id = req.params.id;
     const body = req.body;
+    const senderId = req.query.senderId;
     try {
       await todoSvc.update(id, body);
+      notificationSvc.sendNotification({
+        title: 'Todo',
+        body: `TODO "${body.title}" updated`,
+        data: {
+          id: body.id,
+          url: `/#/todo/edit/${body.id}`
+        },
+        actions: [{ action: 'go', title: 'Go to TODO' }]
+      }, senderId);
       res.send(body);
     } catch (err) {
       res.status(500).status(err);

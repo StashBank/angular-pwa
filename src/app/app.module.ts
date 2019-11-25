@@ -34,7 +34,7 @@ export class HammerConfig extends HammerGestureConfig {
 
     CoreModule,
 
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('/sw-master.js', { enabled: true })
   ],
   providers: [
     { provide: HAMMER_GESTURE_CONFIG, useClass: HammerConfig },
