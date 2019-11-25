@@ -56,8 +56,9 @@ export class NotificationService {
     return query;
   }
 
-  sendNotification(payload: any, senderId: string) {
-    const allSubscriptions = this.getAll().filter(x => x._id !== senderId);
+  async sendNotification(payload: any, senderId: string) {
+    const allSubscribtions = await this.getAll();
+    const allSubscriptions = allSubscribtions.filter(x => x.id !== senderId);
     if (payload.data && payload.data.id) {
       payload.data.url = '/#/todo/edit/' + payload.data.id;
     }
@@ -85,7 +86,7 @@ export class NotificationService {
     console.log(`Sending notification to ${allSubscriptions.length} subscriptions`);
     return Promise.all(
       allSubscriptions.map(
-        sub => webpush.sendNotification(sub as any, JSON.stringify(notificationPayload))
+        (sub: any) => webpush.sendNotification(sub, JSON.stringify(notificationPayload))
       )
     );
   }
