@@ -35,7 +35,7 @@ importScripts('./idb.js');
   });
 
   self.addEventListener('sync', function (event) {
-    if (event.tag === 'sync-new-todo-posts') {
+    if (event.tag === 'sync-todo-posts') {
       console.log('[Service Worker] Syncing new Posts');
       event.waitUntil(
         readAllData('todo')
@@ -44,7 +44,7 @@ importScripts('./idb.js');
                 var url = dt.url;
                 if(dt.options && dt.options.params) {
                   url += '?';
-                  for(var paramKey in dt.options.param) {
+                  for(var paramKey in dt.options.params) {
                     url += encodeURIComponent(paramKey) + '=' + encodeURIComponent(dt.options.param[paramKey]);
                   }
                 }

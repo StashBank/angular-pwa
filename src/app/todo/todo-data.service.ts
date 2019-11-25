@@ -69,7 +69,7 @@ export class TodoDataService {
           concatMap(() => navigator.serviceWorker.ready),
           map((sw) => {
             console.log('Scheduled new sync task');
-            return sw.sync.register('sync-new-todo-posts');
+            return sw.sync.register('sync-todo-posts');
           }),
           map(() => null)
         );
