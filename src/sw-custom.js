@@ -68,6 +68,9 @@ importScripts('./idb.js');
               })
             )}
           )
+          .catch(function(e) {
+            console.error(e);
+          })
       );
     }
   });

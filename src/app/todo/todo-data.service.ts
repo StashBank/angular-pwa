@@ -34,14 +34,43 @@ export class TodoDataService {
 
   public create(dto: TodoModel): Observable<TodoModel> {
     const id = Guid.create().toString();
-    return this.http.post<TodoModel>('/api/todos', {
+    const url = '/api/todos';
+    const body = {
       id,
       ...dto
-    }, {
+    };
+    const options = {
       params: {
         senderId: this.senderId
       }
-    });
+    };
+
+    if ('serviceWorker' in navigator && 'SyncManager' in window) {
+      return from(
+        this.storeToIndexDb(Guid.create().toString(), {
+          method: 'POST',
+          url,
+          body,
+          options
+        }))
+        .pipe(
+          concatMap(() => {
+            return new Observable(subscriber => {
+              const ref = this.matSnackbar.open('Saving', 'Cancel', { duration: 3000 });
+              ref.afterDismissed().subscribe(() => subscriber.next());
+              ref.onAction().pipe(concatMap(() => this.removeFromIndexDb(id))).subscribe(() => subscriber.complete());
+            });
+          }),
+          concatMap(() => navigator.serviceWorker.ready),
+          map((sw) => {
+            console.log('Scheduled new sync task');
+            return sw.sync.register('sync-todo-posts');
+          }),
+          map(() => null)
+        );
+    } else {
+      return this.http.post<TodoModel>('/api/todos/${id}', body, options);
+    }
   }
 
   public update(id: string, dto: TodoModel): Observable<TodoModel> {
@@ -65,7 +94,13 @@ export class TodoDataService {
           options
         }))
         .pipe(
-          concatMap(() => this.matSnackbar.open('Saving', 'Cancel', { duration: 3000 }).afterDismissed()),
+          concatMap(() => {
+            return new Observable(subscriber => {
+              const ref = this.matSnackbar.open('Saving', 'Cancel', { duration: 3000 });
+              ref.afterDismissed().subscribe(() => subscriber.next());
+              ref.onAction().pipe(concatMap(() => this.removeFromIndexDb(id))).subscribe(() => subscriber.complete());
+            });
+          }),
           concatMap(() => navigator.serviceWorker.ready),
           map((sw) => {
             console.log('Scheduled new sync task');
@@ -74,7 +109,7 @@ export class TodoDataService {
           map(() => null)
         );
     } else {
-      return this.http.put<TodoModel>(`/api/todos/${id}`, body, options);
+      return this.http.put<TodoModel>(url, body, options);
     }
   }
 
@@ -92,6 +127,10 @@ export class TodoDataService {
 
   private storeToIndexDb(key: string, data) {
     return this.idbService.add({ key, ...data});
+  }
+
+  private removeFromIndexDb(key: string) {
+    return this.idbService.delete(key);
   }
 
 }
