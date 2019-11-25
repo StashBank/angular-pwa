@@ -45,7 +45,7 @@ importScripts('./idb.js');
                 if(dt.options && dt.options.params) {
                   url += '?';
                   for(var paramKey in dt.options.params) {
-                    url += encodeURIComponent(paramKey) + '=' + encodeURIComponent(dt.options.param[paramKey]);
+                    url += encodeURIComponent(paramKey) + '=' + encodeURIComponent(dt.options.params[paramKey]);
                   }
                 }
                 return fetch(dt.url, {
