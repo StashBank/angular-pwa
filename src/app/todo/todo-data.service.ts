@@ -46,28 +46,25 @@ export class TodoDataService {
     };
 
     if ('serviceWorker' in navigator && 'SyncManager' in window) {
-      return from(
-        this.storeToIndexDb(Guid.create().toString(), {
-          method: 'POST',
-          url,
-          body,
-          options
-        }))
-        .pipe(
-          concatMap(() => {
-            return new Observable(subscriber => {
-              const ref = this.matSnackbar.open('Saving', 'Cancel', { duration: 3000 });
-              ref.afterDismissed().subscribe(() => subscriber.next());
-              ref.onAction().pipe(concatMap(() => this.removeFromIndexDb(id))).subscribe(() => subscriber.complete());
-            });
-          }),
-          concatMap(() => navigator.serviceWorker.ready),
-          map((sw) => {
-            console.log('Scheduled new sync task');
-            return sw.sync.register('sync-todo-posts');
-          }),
-          map(() => null)
-        );
+      return new Observable(subscriber => {
+        const ref = this.matSnackbar.open('Saving', 'Cancel', { duration: 3000 });
+        ref.afterDismissed().subscribe(() => subscriber.next());
+        ref.onAction().subscribe(() => subscriber.complete());
+      })
+      .pipe(
+        concatMap(() => this.storeToIndexDb(Guid.create().toString(), {
+            method: 'POST',
+            url,
+            body,
+            options
+          })),
+        concatMap(() => navigator.serviceWorker.ready),
+        map((sw) => {
+          console.log('Scheduled new sync task');
+          return sw.sync.register('sync-todo-posts');
+        }),
+        map(() => body)
+      );
     } else {
       return this.http.post<TodoModel>('/api/todos/${id}', body, options);
     }
@@ -86,28 +83,25 @@ export class TodoDataService {
     };
 
     if ('serviceWorker' in navigator && 'SyncManager' in window) {
-      return from(
-        this.storeToIndexDb(Guid.create().toString(), {
+      return new Observable(subscriber => {
+        const ref = this.matSnackbar.open('Saving', 'Cancel', { duration: 3000 });
+        ref.afterDismissed().subscribe(() => subscriber.next());
+        ref.onAction().pipe(concatMap(() => this.removeFromIndexDb(id))).subscribe(() => subscriber.complete());
+      })
+      .pipe(
+        concatMap(() => this.storeToIndexDb(Guid.create().toString(), {
           method: 'PUT',
           url,
           body,
           options
-        }))
-        .pipe(
-          concatMap(() => {
-            return new Observable(subscriber => {
-              const ref = this.matSnackbar.open('Saving', 'Cancel', { duration: 3000 });
-              ref.afterDismissed().subscribe(() => subscriber.next());
-              ref.onAction().pipe(concatMap(() => this.removeFromIndexDb(id))).subscribe(() => subscriber.complete());
-            });
-          }),
-          concatMap(() => navigator.serviceWorker.ready),
-          map((sw) => {
-            console.log('Scheduled new sync task');
-            return sw.sync.register('sync-todo-posts');
-          }),
-          map(() => null)
-        );
+        })),
+        concatMap(() => navigator.serviceWorker.ready),
+        map((sw) => {
+          console.log('Scheduled new sync task');
+          return sw.sync.register('sync-todo-posts');
+        }),
+        map(() => null)
+      );
     } else {
       return this.http.put<TodoModel>(url, body, options);
     }
