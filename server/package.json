@@ -5,7 +5,7 @@
   },
   "private": true,
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-static": "^1.2.6",
     "nedb": "^1.8.0",
     "web-push": "^3.4.1"
